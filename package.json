@@ -1,15 +1,15 @@
 {
-  "name": "@koumatsumoto/npm-package-template-2024",
+  "name": "@koumatsumoto/bitflyer-lightning-api",
   "version": "0.1.0",
   "description": "The template to create new npm package with GitHub Packages registry",
   "author": "Kou Matsumoto",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koumatsumoto/npm-package-template-2024.git"
+    "url": "git+https://github.com/koumatsumoto/bitflyer-lightning-api.git"
   },
-  "homepage": "https://github.com/koumatsumoto/npm-package-template-2024#readme",
+  "homepage": "https://github.com/koumatsumoto/bitflyer-lightning-api#readme",
   "bugs": {
-    "url": "https://github.com/koumatsumoto/npm-package-template-2024/issues"
+    "url": "https://github.com/koumatsumoto/bitflyer-lightning-api/issues"
   },
   "engines": {
     "node": ">=20.0.0",
