@@ -1,0 +1,78 @@
+{
+  "name": "@koumatsumoto/npm-package-template-2024",
+  "version": "0.1.0",
+  "description": "The template to create new npm package with GitHub Packages registry",
+  "author": "Kou Matsumoto",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/koumatsumoto/npm-package-template-2024.git"
+  },
+  "homepage": "https://github.com/koumatsumoto/npm-package-template-2024#readme",
+  "bugs": {
+    "url": "https://github.com/koumatsumoto/npm-package-template-2024/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.6.0"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build": "tsc && vite build",
+    "format": "prettier --write --ignore-path .gitignore .",
+    "lint": "prettier --check --ignore-path .gitignore .",
+    "test": "vitest run",
+    "NOTE: `|| true` is used to resolve errors at npm publish": "ignore command errors to the bug of https://github.com/npm/cli/issues/3707",
+    "prepare": "husky install || true"
+  },
+  "keywords": [],
+  "license": "Apache License",
+  "devDependencies": {
+    "@commitlint/cli": "^19.2.1",
+    "@commitlint/config-conventional": "^19.1.0",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@tsconfig/strictest": "^2.0.5",
+    "@types/node": "^20.12.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "typescript": "^5.4.4",
+    "vite": "^5.2.8",
+    "vitest": "^1.4.0"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "plugins": [
+      "prettier-plugin-organize-imports"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx,html,css,scss,json,yml,yaml,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "bash -c tsc",
+      "vitest related --run"
+    ]
+  }
+}
