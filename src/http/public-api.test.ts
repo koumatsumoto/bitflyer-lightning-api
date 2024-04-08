@@ -1,4 +1,4 @@
-import { HttpPublicApi } from "./api";
+import { HttpPublicApi } from "./public-api";
 
 describe.skip("HttpPublicApi", () => {
   const api = new HttpPublicApi();
