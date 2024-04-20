@@ -15,39 +15,140 @@ export class HttpApi {
   }
 
   async getmarkets() {
-    return await this.get({ path: "/v1/getmarkets", schema: Schema.getmarkets });
+    return await this.get({
+      path: "/v1/getmarkets",
+      schema: Schema.getmarkets,
+    });
   }
 
   async markets() {
-    return await this.get({ path: "/v1/markets", schema: Schema.getmarkets });
+    return await this.get({
+      path: "/v1/markets",
+      schema: Schema.getmarkets,
+    });
   }
 
   async getmarketsUsa() {
-    return await this.get({ path: "/v1/getmarkets/usa", schema: Schema.getmarkets });
+    return await this.get({
+      path: "/v1/getmarkets/usa",
+      schema: Schema.getmarkets,
+    });
   }
 
   async marketsUsa() {
-    return await this.get({ path: "/v1/markets/usa", schema: Schema.getmarkets });
+    return await this.get({
+      path: "/v1/markets/usa",
+      schema: Schema.getmarkets,
+    });
   }
 
   async getmarketsEu() {
-    return await this.get({ path: "/v1/getmarkets/eu", schema: Schema.getmarkets });
+    return await this.get({
+      path: "/v1/getmarkets/eu",
+      schema: Schema.getmarkets,
+    });
   }
 
   async marketsEu() {
-    return await this.get({ path: "/v1/markets/eu", schema: Schema.getmarkets });
+    return await this.get({
+      path: "/v1/markets/eu",
+      schema: Schema.getmarkets,
+    });
   }
 
-  async board(productCode: string) {
-    return await this.get({ path: "/v1/board", params: { product_code: productCode }, schema: Schema.getboard });
+  async getboard(params: { product_code?: string }) {
+    return await this.get({
+      path: "/v1/getboard",
+      params: params,
+      schema: Schema.getboard,
+    });
   }
 
-  async getboard(productCode: string) {
-    return await this.get({ path: "/v1/getboard", params: { product_code: productCode }, schema: Schema.getboard });
+  async board(params: { product_code?: string }) {
+    return await this.get({
+      path: "/v1/board",
+      params: params,
+      schema: Schema.getboard,
+    });
+  }
+
+  async getticker(params: { product_code?: string }) {
+    return await this.get({
+      path: "/v1/getticker",
+      params: params,
+      schema: Schema.getticker,
+    });
+  }
+
+  async ticker(params: { product_code?: string }) {
+    return await this.get({
+      path: "/v1/ticker",
+      params: params,
+      schema: Schema.getticker,
+    });
+  }
+
+  async getexecutions(params: { product_code?: string; count?: number; before?: number; after?: number }) {
+    return await this.get({
+      path: "/v1/getexecutions",
+      params: params,
+      schema: Schema.getexecutions,
+    });
+  }
+
+  async executions(params: { product_code?: string; count?: number; before?: number; after?: number }) {
+    return await this.get({
+      path: "/v1/executions",
+      params: params,
+      schema: Schema.getexecutions,
+    });
+  }
+
+  async getboardstate(params: { product_code?: string }) {
+    return await this.get({
+      path: "/v1/getboardstate",
+      params: params,
+      schema: Schema.getboardstate,
+    });
+  }
+
+  async gethealth(params: { product_code?: string }) {
+    return await this.get({
+      path: "/v1/gethealth",
+      params: params,
+      schema: Schema.gethealth,
+    });
+  }
+
+  async getfundingrate(params: { product_code: string }) {
+    return await this.get({
+      path: "/v1/getfundingrate",
+      params: params,
+      schema: Schema.getfundingrate,
+    });
+  }
+
+  async getcorporateleverage() {
+    return await this.get({
+      path: "/v1/getcorporateleverage",
+      schema: Schema.getcorporateleverage,
+    });
+  }
+
+  async getchats(params?: { from_date: string }) {
+    return await this.get({
+      path: "/v1/getchats",
+      params: params,
+      schema: Schema.getchats,
+    });
   }
 
   async getpermissions() {
-    return await this.get({ path: "/v1/me/getpermissions", auth: true, schema: Schema.getpermissions });
+    return await this.get({
+      auth: true,
+      path: "/v1/me/getpermissions",
+      schema: Schema.getpermissions,
+    });
   }
 
   async cancelchildorder(body: { product_code: string; child_order_id: string }) {
@@ -69,7 +170,7 @@ export class HttpApi {
     schema,
   }: {
     path: string;
-    params?: Record<string, string | number | boolean>;
+    params?: Record<string, string | number | boolean> | undefined;
     auth?: boolean;
     schema: T;
   }): Promise<z.infer<T>> {

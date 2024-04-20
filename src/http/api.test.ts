@@ -30,11 +30,47 @@ describe("HttpApi", () => {
     });
 
     test("getboard", async () => {
-      await expect(api.getboard("BTC_JPY")).resolves.not.toThrow();
+      await expect(api.getboard({ product_code: "BTC_JPY" })).resolves.not.toThrow();
     });
 
     test("board", async () => {
-      await expect(api.board("BTC_JPY")).resolves.not.toThrow();
+      await expect(api.board({ product_code: "BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("getticker", async () => {
+      await expect(api.getticker({ product_code: "BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("ticker", async () => {
+      await expect(api.getticker({ product_code: "BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("getexecutions", async () => {
+      await expect(api.getexecutions({ product_code: "BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("executions", async () => {
+      await expect(api.executions({ product_code: "BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("getboardstate", async () => {
+      await expect(api.getboardstate({ product_code: "BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("gethealth", async () => {
+      await expect(api.gethealth({ product_code: "BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("getfundingrate", async () => {
+      await expect(api.getfundingrate({ product_code: "FX_BTC_JPY" })).resolves.not.toThrow();
+    });
+
+    test("getcorporateleverage", async () => {
+      await expect(api.getcorporateleverage()).resolves.not.toThrow();
+    });
+
+    test("getchats", async () => {
+      await expect(api.getchats()).resolves.not.toThrow();
     });
   });
 
