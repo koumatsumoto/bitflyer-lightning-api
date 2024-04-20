@@ -1,40 +1,40 @@
 import { describe } from "vitest";
 import { HttpApi } from "./api";
 
-describe.skip("HttpApi", () => {
+describe("HttpApi", () => {
   const api = new HttpApi();
 
   describe("Public", () => {
     test("getmarkets", async () => {
-      expect(await api.getmarkets()).toStrictEqual([]);
+      await expect(api.getmarkets()).resolves.not.toThrow();
     });
 
     test("markets", async () => {
-      expect(await api.markets()).toStrictEqual([]);
+      await expect(api.markets()).resolves.not.toThrow();
     });
 
     test("getmarketsUsa", async () => {
-      expect(await api.getmarketsUsa()).toStrictEqual([]);
+      await expect(api.getmarketsUsa()).resolves.not.toThrow();
     });
 
     test("marketsUsa", async () => {
-      expect(await api.marketsUsa()).toStrictEqual([]);
+      await expect(api.marketsUsa()).resolves.not.toThrow();
     });
 
     test("getmarketsEu", async () => {
-      expect(await api.getmarketsEu()).toStrictEqual([]);
+      await expect(api.getmarketsEu()).resolves.not.toThrow();
     });
 
     test("marketsEu", async () => {
-      expect(await api.marketsEu()).toStrictEqual([]);
+      await expect(api.marketsEu()).resolves.not.toThrow();
     });
 
     test("getboard", async () => {
-      expect(await api.getboard("BTC_JPY")).toStrictEqual([]);
+      await expect(api.getboard("BTC_JPY")).resolves.not.toThrow();
     });
   });
 
-  describe("Private", () => {
+  describe.skip("Private", () => {
     const api = new HttpApi();
     api.setCredentials({
       apiKey: process.env["TEST_API_KEY"] ?? "",
@@ -42,15 +42,15 @@ describe.skip("HttpApi", () => {
     });
 
     test("getpermissions", async () => {
-      expect(await api.getpermissions()).toStrictEqual([]);
+      await expect(api.getpermissions()).resolves.not.toThrow();
     });
 
     test("cancelchildorder", async () => {
-      expect(await api.cancelchildorder({ product_code: "BTC_JPY", child_order_id: "hoge" })).toStrictEqual([]);
+      await expect(api.cancelchildorder({ product_code: "BTC_JPY", child_order_id: "id" })).resolves.not.toThrow();
     });
 
     test("cancelallchildorders", async () => {
-      expect(await api.cancelallchildorders({ product_code: "BTC_JPY" })).toStrictEqual([]);
+      await expect(api.cancelallchildorders({ product_code: "BTC_JPY" })).resolves.not.toThrow();
     });
   });
 });
