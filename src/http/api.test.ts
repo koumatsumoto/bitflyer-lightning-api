@@ -2,7 +2,7 @@ import { describe } from "vitest";
 import { HttpApi } from "./api";
 
 describe("HttpApi", () => {
-  const api = new HttpApi();
+  const api = new HttpApi({ debug: true });
 
   describe("Public", () => {
     test("getmarkets", async () => {
@@ -32,10 +32,14 @@ describe("HttpApi", () => {
     test("getboard", async () => {
       await expect(api.getboard("BTC_JPY")).resolves.not.toThrow();
     });
+
+    test("board", async () => {
+      await expect(api.board("BTC_JPY")).resolves.not.toThrow();
+    });
   });
 
   describe.skip("Private", () => {
-    const api = new HttpApi();
+    const api = new HttpApi({ debug: true });
     api.setCredentials({
       apiKey: process.env["TEST_API_KEY"] ?? "",
       apiSecret: process.env["TEST_API_SECRET"] ?? "",

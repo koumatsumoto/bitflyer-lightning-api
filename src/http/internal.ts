@@ -36,20 +36,6 @@ export function getUnixTimestamp() {
   return Date.now();
 }
 
-export function extractResponseData(data: string) {
-  if (!data.length) {
-    return {};
-  }
-
-  try {
-    return JSON.parse(data);
-  } catch {
-    return {
-      error: `Invalid JSON result: ${data}`,
-    };
-  }
-}
-
 export function getBaseHeader() {
   return {
     "Content-Type": "application/json",
@@ -70,19 +56,19 @@ export async function createAuthHeaders(
     "ACCESS-KEY": credentials.apiKey,
     "ACCESS-TIMESTAMP": timestamp,
     "ACCESS-SIGN": await createHmac(credentials.apiSecret, message),
-  };
+  } as const;
 }
 
-export async function handleResponse(response: Response) {
-  const result = extractResponseData(await response.text());
-
-  if (!response.ok) {
-    // examples:
-    //   - { Message: The requested resource does not support http method 'GET'. }
-    //   - { status: -122, error_message: 'Empty request body', data: null }
-    console.error(result);
-    throw result;
+export function extractResponseData(data: string) {
+  if (!data.length) {
+    return {};
   }
 
-  return result;
+  try {
+    return JSON.parse(data);
+  } catch {
+    return {
+      error: `Invalid JSON result: ${data}`,
+    };
+  }
 }

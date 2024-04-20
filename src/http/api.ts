@@ -1,15 +1,17 @@
 import type { ZodType, z } from "zod";
-import { createAuthHeaders, getBaseHeader, handleResponse, makePath, type Credentials } from "./internal";
+import { createAuthHeaders, extractResponseData, getBaseHeader, makePath, type Credentials } from "./internal";
 import { Schema } from "./schema";
 
 const defaultEndpoint = "https://api.bitflyer.com";
 
 export class HttpApi {
   readonly #baseUrl: string;
+  readonly #debug: boolean;
   #credentials?: Credentials;
 
-  constructor(config?: { endpoint?: string }) {
+  constructor(config?: { endpoint?: string; debug?: boolean }) {
     this.#baseUrl = config?.endpoint ?? defaultEndpoint;
+    this.#debug = config?.debug ?? false;
   }
 
   async getmarkets() {
@@ -34,6 +36,10 @@ export class HttpApi {
 
   async marketsEu() {
     return await this.get({ path: "/v1/markets/eu", schema: Schema.getmarkets });
+  }
+
+  async board(productCode: string) {
+    return await this.get({ path: "/v1/board", params: { product_code: productCode }, schema: Schema.getboard });
   }
 
   async getboard(productCode: string) {
@@ -71,10 +77,7 @@ export class HttpApi {
     const url = `${this.#baseUrl}${pathAndSearch}`;
     const headers = auth ? await createAuthHeaders(this.#credentials!, "GET", pathAndSearch) : getBaseHeader();
 
-    const response = await fetch(url, { headers });
-    const result = await handleResponse(response);
-
-    return schema.parse(result);
+    return await this.#handleResponse(await fetch(url, { headers }), schema);
   }
 
   async post<T extends ZodType<any, any, any>>({
@@ -91,8 +94,29 @@ export class HttpApi {
     const url = `${this.#baseUrl}${path}`;
     const headers = auth ? await createAuthHeaders(this.#credentials!, "POST", path, body) : getBaseHeader();
 
-    const response = await fetch(url, { method: "POST", headers, body: JSON.stringify(body) });
-    const result = await handleResponse(response);
+    return await this.#handleResponse(
+      await fetch(url, { method: "POST", headers, body: JSON.stringify(body) }),
+      schema,
+    );
+  }
+
+  async #handleResponse<T extends ZodType<any, any, any>>(response: Response, schema: T): Promise<z.infer<T>> {
+    if (this.#debug) {
+      console.log(`GET: ${response.url}`);
+    }
+
+    const result = extractResponseData(await response.text());
+    if (this.#debug) {
+      console.log(`Result: ${JSON.stringify(result)}`);
+    }
+
+    if (!response.ok) {
+      // examples:
+      //   - { Message: The requested resource does not support http method 'GET'. }
+      //   - { status: -122, error_message: 'Empty request body', data: null }
+      console.error(result);
+      throw result;
+    }
 
     return schema.parse(result);
   }
