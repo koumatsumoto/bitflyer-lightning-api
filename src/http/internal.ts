@@ -46,10 +46,10 @@ export async function createAuthHeaders(
   credentials: Credentials,
   method: "GET" | "POST",
   path: string,
-  body?: Record<string, any>,
+  params?: Record<string, any>,
 ): Promise<Record<string, string>> {
   const timestamp = getUnixTimestamp().toString();
-  const message = `${timestamp}${method}${path}${body ? JSON.stringify(body) : ""}`;
+  const message = `${timestamp}${method}${path}${params ? JSON.stringify(params) : ""}`;
 
   return {
     ...getBaseHeader(),
