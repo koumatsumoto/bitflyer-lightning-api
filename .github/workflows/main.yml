@@ -45,8 +45,24 @@ jobs:
         shell: bash
         run: npm version --no-commit-hooks --no-git-tag-version --allow-same-version $VERSION && npm publish --ignore-scripts
         env:
-          VERSION: v${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
+          VERSION: ${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create Job Summary
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ inputs.auth_token }}
+          script: |
+            const heading = 'New NPM Packages'
+            const output = `
+              *New Version* 🤖 *${{ inputs.version }}*\n
+              Run command below to install newly published package.\n
+              \`npm install ${{ steps.package_info.outputs.package_name }}@${{ steps.package_info.outputs.package_version }}\`\n
+            `;
+            await core.summary
+              .addHeading(heading)
+              .addRaw(output)
+              .write()
 
   publish-production:
     if: contains(github.ref, 'tags/v')
@@ -68,7 +84,9 @@ jobs:
           echo "version=${TAG#v}" >> $GITHUB_OUTPUT
         id: get_version_string
 
-      - uses: koumatsumoto/publish-github-packages-npm@v1
-        with:
-          auth_token: ${{ secrets.GITHUB_TOKEN }}
-          version: ${{ steps.get_version_string.outputs.version }}
+      - name: Publish package
+        shell: bash
+        run: npm version --no-commit-hooks --no-git-tag-version --allow-same-version $VERSION && npm publish --ignore-scripts
+        env:
+          VERSION: ${{ steps.get_version_string.outputs.version }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
