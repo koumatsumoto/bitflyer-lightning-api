@@ -51,7 +51,7 @@ jobs:
       - name: Create Job Summary
         uses: actions/github-script@v6
         with:
-          github-token: ${{ inputs.auth_token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const heading = 'New NPM Packages'
             const output = `
