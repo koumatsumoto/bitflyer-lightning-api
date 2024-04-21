@@ -46,6 +46,13 @@ jobs:
           auth_token: ${{ secrets.GITHUB_TOKEN }}
           version: v${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
 
+      - name: Publish package
+        shell: bash
+        run: npm version --no-commit-hooks --no-git-tag-version --allow-same-version $VERSION && npm publish --ignore-scripts
+        env:
+          VERSION: v${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
+          NODE_AUTH_TOKEN: ${{ inputs.auth_token }}
+
   publish-production:
     if: contains(github.ref, 'tags/v')
     needs: build
