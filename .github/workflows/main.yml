@@ -41,17 +41,12 @@ jobs:
       - uses: koumatsumoto/get-npm-package-info-action@v1
         id: package_info
 
-      - uses: koumatsumoto/publish-github-packages-npm@v1
-        with:
-          auth_token: ${{ secrets.GITHUB_TOKEN }}
-          version: v${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
-
       - name: Publish package
         shell: bash
         run: npm version --no-commit-hooks --no-git-tag-version --allow-same-version $VERSION && npm publish --ignore-scripts
         env:
           VERSION: v${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
-          NODE_AUTH_TOKEN: ${{ inputs.auth_token }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-production:
     if: contains(github.ref, 'tags/v')
