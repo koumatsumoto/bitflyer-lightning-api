@@ -57,7 +57,7 @@ jobs:
             const output = `
               *New Version* 🤖 *${{ inputs.version }}*\n
               Run command below to install newly published package.\n
-              \`npm install ${{ steps.package_info.outputs.package_name }}@${{ steps.package_info.outputs.package_version }}\`\n
+              \`npm install ${{ steps.package_info.outputs.package_name }}@${{ steps.package_info.outputs.git_commit_hash_short }}\`\n
             `;
             await core.summary
               .addHeading(heading)
