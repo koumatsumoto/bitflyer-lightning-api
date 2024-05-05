@@ -42,7 +42,7 @@ jobs:
         id: package_info
 
       - name: Publish package
-        uses: koumatsumoto/publish-npm-package
+        uses: koumatsumoto/publish-npm-package@v1
         with:
           version: ${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
           auth_token: ${{ secrets.NPM_TOKEN }}
@@ -68,7 +68,7 @@ jobs:
         id: get_version_string
 
       - name: Publish package
-        uses: koumatsumoto/publish-npm-package
+        uses: koumatsumoto/publish-npm-package@v1
         with:
           version: ${{ steps.get_version_string.outputs.version }}
           auth_token: ${{ secrets.NPM_TOKEN }}
