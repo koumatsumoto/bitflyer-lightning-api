@@ -1,7 +1,7 @@
 {
-  "name": "@koumatsumoto/bitflyer-lightning-api",
+  "name": "bitflyer-lightning-api",
   "version": "0.1.0",
-  "description": "The template to create new npm package with GitHub Packages registry",
+  "description": "Clients for the bitFlyer Lightning API",
   "author": "Kou Matsumoto",
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "/dist"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "build": "tsc && vite build",

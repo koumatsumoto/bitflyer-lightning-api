@@ -41,10 +41,11 @@ jobs:
       - uses: koumatsumoto/get-npm-package-info-action@v1
         id: package_info
 
-      - uses: koumatsumoto/publish-github-packages-npm@v1
+      - name: Publish package
+        uses: koumatsumoto/publish-npm-package@v1
         with:
-          auth_token: ${{ secrets.GITHUB_TOKEN }}
-          version: v${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
+          version: ${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
+          auth_token: ${{ secrets.NPM_TOKEN }}
 
   publish-production:
     if: contains(github.ref, 'tags/v')
@@ -60,13 +61,14 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ runner.arch }}-
           fail-on-cache-miss: true
 
-      - name: Trim v of version string
+      - name: remove v from the tag name
         run: |
           TAG=${{ github.ref_name }}
           echo "version=${TAG#v}" >> $GITHUB_OUTPUT
         id: get_version_string
 
-      - uses: koumatsumoto/publish-github-packages-npm@v1
+      - name: Publish package
+        uses: koumatsumoto/publish-npm-package@v1
         with:
-          auth_token: ${{ secrets.GITHUB_TOKEN }}
           version: ${{ steps.get_version_string.outputs.version }}
+          auth_token: ${{ secrets.NPM_TOKEN }}
