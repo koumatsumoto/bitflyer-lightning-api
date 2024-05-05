@@ -45,8 +45,6 @@
     "zod": "^3.22.5"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.2.1",
-    "@commitlint/config-conventional": "^19.1.0",
     "@rollup/plugin-typescript": "^11.1.6",
     "@tsconfig/strictest": "^2.0.5",
     "@types/node": "^20.12.5",
@@ -63,11 +61,6 @@
     "printWidth": 120,
     "plugins": [
       "prettier-plugin-organize-imports"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
     ]
   },
   "lint-staged": {
