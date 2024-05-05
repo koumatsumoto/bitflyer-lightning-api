@@ -42,27 +42,10 @@ jobs:
         id: package_info
 
       - name: Publish package
-        shell: bash
-        run: npm version --no-commit-hooks --no-git-tag-version --allow-same-version $VERSION && npm publish --ignore-scripts
-        env:
-          VERSION: ${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create Job Summary
-        uses: actions/github-script@v6
+        uses: koumatsumoto/publish-npm-package
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const heading = 'New NPM Packages'
-            const output = `
-              *New Version* 🤖 *${{ inputs.version }}*\n
-              Run command below to install newly published package.\n
-              \`npm install ${{ steps.package_info.outputs.package_name }}@${{ steps.package_info.outputs.git_commit_hash_short }}\`\n
-            `;
-            await core.summary
-              .addHeading(heading)
-              .addRaw(output)
-              .write()
+          version: ${{ steps.package_info.outputs.package_version }}-dev-${{ steps.package_info.outputs.git_commit_hash_short }}
+          auth_token: ${{ secrets.NPM_TOKEN }}
 
   publish-production:
     if: contains(github.ref, 'tags/v')
@@ -78,15 +61,14 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ runner.arch }}-
           fail-on-cache-miss: true
 
-      - name: Trim v of version string
+      - name: remove v from the tag name
         run: |
           TAG=${{ github.ref_name }}
           echo "version=${TAG#v}" >> $GITHUB_OUTPUT
         id: get_version_string
 
       - name: Publish package
-        shell: bash
-        run: npm version --no-commit-hooks --no-git-tag-version --allow-same-version $VERSION && npm publish --ignore-scripts
-        env:
-          VERSION: ${{ steps.get_version_string.outputs.version }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        uses: koumatsumoto/publish-npm-package
+        with:
+          version: ${{ steps.get_version_string.outputs.version }}
+          auth_token: ${{ secrets.NPM_TOKEN }}
