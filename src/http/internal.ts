@@ -23,10 +23,10 @@ export async function createHmac(secret: string, body: string) {
   ]);
   const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(body));
 
-  return toHex(signature);
+  return toHexString(signature);
 }
 
-function toHex(buffer: ArrayBuffer) {
+function toHexString(buffer: ArrayBuffer) {
   return Array.from(new Uint8Array(buffer))
     .map((x) => x.toString(16).padStart(2, "0"))
     .join("");
