@@ -42,6 +42,9 @@
   "keywords": [],
   "license": "Apache License",
   "dependencies": {
+    "jsonrpc2-ws": "^1.0.0-beta24",
+    "rxjs": "^7.8.1",
+    "ws": "^8.17.0",
     "zod": "^3.22.5"
   },
   "devDependencies": {
