@@ -58,17 +58,3 @@ export async function createAuthHeaders(
     "ACCESS-SIGN": await createHmac(credentials.apiSecret, message),
   } as const;
 }
-
-export function extractResponseData(data: string) {
-  if (!data.length) {
-    return {};
-  }
-
-  try {
-    return JSON.parse(data);
-  } catch {
-    return {
-      error: `Invalid JSON result: ${data}`,
-    };
-  }
-}
